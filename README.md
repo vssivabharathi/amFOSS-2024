@@ -1,4 +1,4 @@
-# AMFOSS-2024
+# amFOSS-2024
 
 ## About Me
 
