@@ -63,7 +63,7 @@ async function processCommand(command) {
     const [action, ...args] = command.split(' ');
 
     
-    terminalOutput.innerHTML += `<span style="color: green;">user&ubuntu:~ ${command}</span><br/>`;
+    terminalOutput.innerHTML += `<span style="color: green;">user&ubuntu:~</span> ${command}<br/>`;
 
     switch (action) {
         case 'help':
