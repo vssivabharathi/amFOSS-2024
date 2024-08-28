@@ -10,10 +10,10 @@
 
 .terminal {
     width: 40%;
-    background-color: #333;
+    background-image: conic-gradient(from 180deg, #690068, #000affd1, #ff6501, #ff0000);
     color: #fff;
     padding: 20px;
-    box-sizing: border-box;
+    box-sizing:border-box;
 }
 
 .terminal-window {
@@ -21,6 +21,7 @@
     height: 100%;
     padding: 10px;
     overflow: auto;
+  
 }
 
 .terminal-output {
@@ -34,6 +35,7 @@
 
 .prompt {
     margin-right: 5px;
+    color: green;
 }
 
 input[type="text"] {
@@ -42,4 +44,39 @@ input[type="text"] {
     color: #fff;
     outline: none;
     flex-grow: 1;
+}
+
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.window-controls span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.window-controls .close {
+    background-color: #FF5F57;
+}
+
+.window-controls .minimize {
+    background-color: #FFBD2E;
+}
+
+.window-controls .maximize {
+    background-color: #28C940;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #333; /* Replace with your desired color */
 }
