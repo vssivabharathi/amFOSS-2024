@@ -36,6 +36,7 @@ const API_URL = 'https://fakestoreapi.com';
 const terminalOutput = document.querySelector('.terminal-output');
 const terminalInput = document.querySelector('input[type="text"]');
 let cart = [];
+let productDetailsCache = {}; // Cache to store product details
 
 document.addEventListener('DOMContentLoaded', () => {
     terminalInput.addEventListener('keydown', function(event) {
@@ -47,21 +48,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function processCommand(command) {
-    clearTerminal(); // Clear the previous command output
+async function processCommand(command) {
+    clearTerminal(); // Clear previous command output
 
     const [action, ...args] = command.split(' ');
 
-    terminalOutput.innerHTML += `<span style="color: green;">user&ubuntu:~ </span>${command}<br/>`;
+    // Display the command itself in the terminal in green
+    terminalOutput.innerHTML += `<span style="color: green;">user&ubuntu:~ ${command}</span><br/>`;
+
     switch (action) {
         case 'help':
             viewCommand();
             break;
         case 'list':
-            listProducts();
+            await listProducts();
             break;
         case 'details':
-            if (args.length) getProductDetails(args[0]);
+            if (args.length) await getProductDetails(args[0]);
             break;
         case 'add':
             if (args.length) addToCart(args[0]);
@@ -79,18 +82,18 @@ function processCommand(command) {
             clearTerminal();
             break;
         case 'search':
-            if (args.length) searchProduct(args.join(' '));
+            if (args.length) await searchProduct(args.join(' '));
             break;
         case 'sort':
-            if (args.length) sortProducts(args[0]);
+            if (args.length) await sortProducts(args[0]);
             break;
         default:
-            terminalOutput.textContent += `Invalid command: ${command}\n`;
+            terminalOutput.innerHTML += `Invalid command: ${command}<br/>`;
             break;
     }
 }
 
-function viewCommand() {
+async function viewCommand() {
     terminalOutput.innerHTML += `
 Available Commands:
 - help: Display this help text
@@ -103,7 +106,7 @@ Available Commands:
 - clear: Clear the terminal screen
 - search 'product_name': Search for a product by name
 - sort 'price/name': Sort products by price or name
-\n`;
+<br/>`;
 }
 
 // Function to fetch and display products
@@ -120,9 +123,14 @@ async function listProducts() {
 // Function to display product details
 async function getProductDetails(productId) {
     try {
-        const response = await fetch(`${API_URL}/products/${productId}`);
-        const product = await response.json();
-        displayProductDetails(product);
+        if (productDetailsCache[productId]) {
+            displayProductDetails(productDetailsCache[productId]);
+        } else {
+            const response = await fetch(`${API_URL}/products/${productId}`);
+            const product = await response.json();
+            productDetailsCache[productId] = product; // Cache the product details
+            displayProductDetails(product);
+        }
     } catch (error) {
         console.error('Error fetching product details:', error);
     }
@@ -131,7 +139,7 @@ async function getProductDetails(productId) {
 // Function to add product to cart
 function addToCart(productId) {
     cart.push(productId);
-    terminalOutput.innerHTML += `Product ${productId} added to cart.\n`;
+    terminalOutput.innerHTML += `Product ${productId} added to cart.<br/>`;
 }
 
 // Function to remove product from cart
@@ -139,28 +147,40 @@ function removeFromCart(productId) {
     const index = cart.indexOf(productId);
     if (index > -1) {
         cart.splice(index, 1);
-        terminalOutput.innerHTML += `Product ${productId} removed from cart.\n`;
+        terminalOutput.innerHTML += `Product ${productId} removed from cart.<br/>`;
     } else {
-        terminalOutput.innerHTML += `Product ${productId} not found in cart.\n`;
+        terminalOutput.innerHTML += `Product ${productId} not found in cart.<br/>`;
     }
 }
 
-// Function to view cart items
-function viewCart() {
+// Function to view cart items with product names
+async function viewCart() {
     if (cart.length === 0) {
-        terminalOutput.innerHTML += `Your cart is empty.\n`;
+        terminalOutput.innerHTML += `Your cart is empty.<br/>`;
         return;
     }
-    terminalOutput.innerHTML += `Cart items: ${cart.join(', ')}\n`;
+
+    // Fetch product details for each product in the cart
+    const productDetailsPromises = cart.map(productId => fetch(`${API_URL}/products/${productId}`).then(response => response.json()));
+    
+    try {
+        const productDetails = await Promise.all(productDetailsPromises);
+        terminalOutput.innerHTML += `Your cart items:<br/>`;
+        productDetails.forEach(product => {
+            terminalOutput.innerHTML += `${product.title} - $${product.price}<br/>`;
+        });
+    } catch (error) {
+        console.error('Error fetching cart product details:', error);
+    }
 }
 
 // Function to handle 'buy' command
 function buyProducts() {
     if (cart.length === 0) {
-        terminalOutput.innerHTML += `Your cart is empty. Add items before buying.\n`;
+        terminalOutput.innerHTML += `Your cart is empty. Add items before buying.<br/>`;
         return;
     }
-    window.location.href = 'checkout.html'; 
+    window.location.href = 'checkout.html';  // Replace with actual checkout page
 }
 
 // Function to clear terminal screen
@@ -199,14 +219,15 @@ async function sortProducts(criterion) {
 // Utility functions to display products and details
 function displayProducts(products) {
     products.forEach(product => {
-        terminalOutput.innerHTML += `${product.id}: ${product.title} - $${product.price}\n`;
+        terminalOutput.innerHTML += `${product.id}: ${product.title} - $${product.price}<br/>`;
     });
 }
 
 function displayProductDetails(product) {
-    terminalOutput.innerHTML += `${product.id}: ${product.title} - $${product.price}\n`;
-    terminalOutput.innerHTML += `${product.description}\n`;
+    terminalOutput.innerHTML += `${product.id}: ${product.title} - $${product.price}<br/>`;
+    terminalOutput.innerHTML += `${product.description}<br/>`;
 }
+
 
 
 
