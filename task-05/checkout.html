@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cart</title>
+    <title>Checkout</title>
+    <link rel="stylesheet" href="checkout.css">
 </head>
 <body>
-    Add to cart 
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Your shopping cart</h2>
+              
+            </div>
+            <div class="card-body" id="cart-items">
+                <!-- Cart items will be dynamically injected here -->
+            </div>
+            <div class="card-footer">
+                <p>Shipping: <span class="value">FREE</span></p>
+                <p>Total TAX: <span class="value" id="total-tax">$0.00</span></p>
+                <p>Total Amount: <span class="total" id="total-amount">$0.00</span></p>
+                <button class="checkout-button" id="checkout-button">Checkout</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>

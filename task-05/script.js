@@ -35,25 +35,34 @@ document.addEventListener('DOMContentLoaded', () => {
 const API_URL = 'https://fakestoreapi.com';
 const terminalOutput = document.querySelector('.terminal-output');
 const terminalInput = document.querySelector('input[type="text"]');
-let cart = [];
-let productDetailsCache = {}; // Cache to store product details
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let productDetailsCache = {}; 
 
 document.addEventListener('DOMContentLoaded', () => {
-    terminalInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            processCommand(terminalInput.value.trim());
-            terminalInput.value = '';
-        }
-    });
+    if (document.getElementById('checkout-button')) {
+        
+        loadCartItems();
+        document.getElementById('checkout-button').addEventListener('click', () => {
+            alert('Proceeding to checkout!');
+        });
+    } else {
+      
+        terminalInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                processCommand(terminalInput.value.trim());
+                terminalInput.value = '';
+            }
+        });
+    }
 });
 
 async function processCommand(command) {
-    clearTerminal(); // Clear previous command output
+    clearTerminal(); 
 
     const [action, ...args] = command.split(' ');
 
-    // Display the command itself in the terminal in green
+    
     terminalOutput.innerHTML += `<span style="color: green;">user&ubuntu:~ ${command}</span><br/>`;
 
     switch (action) {
@@ -138,8 +147,13 @@ async function getProductDetails(productId) {
 
 // Function to add product to cart
 function addToCart(productId) {
-    cart.push(productId);
-    terminalOutput.innerHTML += `Product ${productId} added to cart.<br/>`;
+    if (!cart.includes(productId)) {
+        cart.push(productId);
+        localStorage.setItem('cart', JSON.stringify(cart)); // Saving  the cart to localStorage
+        terminalOutput.innerHTML += `Product ${productId} added to cart.<br/>`;
+    } else {
+        terminalOutput.innerHTML += `Product ${productId} is already in the cart.<br/>`;
+    }
 }
 
 // Function to remove product from cart
@@ -147,6 +161,7 @@ function removeFromCart(productId) {
     const index = cart.indexOf(productId);
     if (index > -1) {
         cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart)); 
         terminalOutput.innerHTML += `Product ${productId} removed from cart.<br/>`;
     } else {
         terminalOutput.innerHTML += `Product ${productId} not found in cart.<br/>`;
@@ -162,7 +177,7 @@ async function viewCart() {
 
     // Fetch product details for each product in the cart
     const productDetailsPromises = cart.map(productId => fetch(`${API_URL}/products/${productId}`).then(response => response.json()));
-    
+
     try {
         const productDetails = await Promise.all(productDetailsPromises);
         terminalOutput.innerHTML += `Your cart items:<br/>`;
@@ -171,6 +186,7 @@ async function viewCart() {
         });
     } catch (error) {
         console.error('Error fetching cart product details:', error);
+        terminalOutput.innerHTML += `<p>Error loading cart items. Please try again later.</p>`;
     }
 }
 
@@ -180,7 +196,7 @@ function buyProducts() {
         terminalOutput.innerHTML += `Your cart is empty. Add items before buying.<br/>`;
         return;
     }
-    window.location.href = 'checkout.html';  // Replace with actual checkout page
+    window.location.href = 'checkout.html'; // Redirect to checkout page
 }
 
 // Function to clear terminal screen
@@ -226,6 +242,42 @@ function displayProducts(products) {
 function displayProductDetails(product) {
     terminalOutput.innerHTML += `${product.id}: ${product.title} - $${product.price}<br/>`;
     terminalOutput.innerHTML += `${product.description}<br/>`;
+}
+
+// Function to load cart items on the checkout page
+async function loadCartItems() {
+    const cartItemsContainer = document.getElementById('cart-items');
+    let totalAmount = 0;
+
+    // Fetch product details for each product in the cart
+    const productDetailsPromises = cart.map(productId =>
+        fetch(`${API_URL}/products/${productId}`).then(response => response.json())
+    );
+
+    try {
+        const productDetails = await Promise.all(productDetailsPromises);
+
+        productDetails.forEach(product => {
+            cartItemsContainer.innerHTML += `
+                <div class="cart-item">
+                    <img src="${product.image}" alt="${product.title}" class="item-image">
+                    <div class="item-details">
+                        <p>${product.title}</p>
+                        <p class="price">$${product.price.toFixed(2)}</p>
+                    </div>
+                </div>
+            `;
+            totalAmount += product.price;
+        });
+
+        // Update total amount and tax
+        const tax = totalAmount * 0.08; // Assuming 8% tax
+        document.getElementById('total-tax').textContent = `$${tax.toFixed(2)}`;
+        document.getElementById('total-amount').textContent = `$${(totalAmount + tax).toFixed(2)}`;
+    } catch (error) {
+        console.error('Error fetching cart product details:', error);
+        cartItemsContainer.innerHTML = `<p>Error loading cart items. Please try again later.</p>`;
+    }
 }
 
 
