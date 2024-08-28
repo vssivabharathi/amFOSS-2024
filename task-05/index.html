@@ -4,15 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-commerce Terminal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <div class="product-catalog">
+
+
+            <!--Header for this product page-->
+            <header>
+                <nav class="navbar">
+                    <div class="logo">
+                        <img src="shoe_logo.png" alt="Foot Hut Logo">
+                        <span>Foot Hut</span>
+                    </div>
+                    <ul class="nav-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                    <div class="nav-icons">
+                        <a href="#">
+                            <span class="material-symbols-outlined">
+                                search
+                                </span>
+                        </a>
+                        <hr>
+                        <a href="#"><span class="material-symbols-outlined">
+                            favorite
+                            </span></a>
+                            <hr>
+                        <a href="#"><span class="material-symbols-outlined">
+                            shopping_cart
+                            </span>
+                        </a>
+                        <span>$0.00</span>
+                    </div>
+                </nav>
+            </header>
+            <h3> Explore Products</h3>
+            <div class="product-list" id="product-list">
+                <!-- Products will be using the fakestoreapi -->
+            </div>
+
+
         </div>
+        
+        <br>
+
         <div class="terminal">
             <!--naivation bar for the terminals-->
-            <nav class="navbar">
+            <nav class="navbar_terminal">
                 
                 <div class="window-controls">
                     <span class="close"></span>

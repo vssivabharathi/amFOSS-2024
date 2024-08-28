@@ -71,12 +71,155 @@ input[type="text"] {
     background-color: #28C940;
 }
 
-.navbar {
+.navbar_terminal {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    background-color: #333; /* Replace with your desired color */
+    background-color: #333; 
+}
+
+
+header {
+    background-color: #f9f9f9;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar {
+    display: flex;
+    background-color:white;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 40px; /* Adjust based on your logo size */
+    height: auto;
+    margin-right: 10px;
+}
+
+.logo span {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1em;
+    padding: 5px;
+}
+
+.nav-links a:hover {
+    color: #ff3333; /* Highlight color on hover */
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-icons img {
+    width: 20px; /* Adjust based on your icon size */
+    height: auto;
+}
+
+.nav-icons span {
+    font-size: 1em;
+    color: #333;
+}
+/* using the google icons for the navigation bar   */
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+  }
+
+/* from  here iam add the css of the products */
+
+.product-list {
+    display: flex;
+    
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product-card {
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    width: 220px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.price-info {
+    margin-bottom: 10px;
+}
+
+.old-price {
+    color: red;
+    text-decoration: line-through;
+    font-size: 0.9em;
+}
+
+.new-price {
+    color: green;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.actions button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.actions button img {
+    width: 20px;
+    height: auto;
+}
+
+.actions button:hover {
+    opacity: 0.7;
 }
