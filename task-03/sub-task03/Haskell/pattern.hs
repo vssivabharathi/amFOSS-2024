@@ -1,5 +1,9 @@
+import System.IO
+
 printPattern :: Int -> IO ()
 printPattern rows = do
+  putStrLn "Enter the number of rows: "
+  rows <- readLn
   forM_ [0..rows-1] $ \i -> do
     forM_ [0..rows-i-1] $ \_ -> putStr " "
     forM_ [0..2*i] $ \_ -> putStr "*"
@@ -10,4 +14,4 @@ printPattern rows = do
     putStrLn ""
 
 main :: IO ()
-main = printPattern 3
+main = printPattern 5

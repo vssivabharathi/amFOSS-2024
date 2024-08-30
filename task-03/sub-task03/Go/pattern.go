@@ -25,6 +25,8 @@ func printPattern(rows int) {
 }
 
 func main() {
-    rows := 3
+    var rows int
+    fmt.Print("Enter the number of rows: ")
+    fmt.Scan(&rows)
     printPattern(rows)
 }

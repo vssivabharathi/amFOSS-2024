@@ -25,7 +25,9 @@ void printPattern(int rows) {
 }
 
 int main() {
-  int rows = 3;
+  int rows;
+  cout << "Enter the number of rows: ";
+  cin >> rows;
   printPattern(rows);
   return 0;
 }

@@ -23,7 +23,9 @@ void printPattern(int rows) {
 }
 
 int main() {
-  int rows = 3;
+  int rows;
+  printf("Enter the number of rows: ");
+  scanf("%d", &rows);
   printPattern(rows);
   return 0;
 }

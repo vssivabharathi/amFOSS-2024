@@ -20,5 +20,5 @@ function printPattern(rows) {
     }
   }
   
-  const rows = 3;
+  const rows = parseInt(prompt("Enter the number of rows: "));
   printPattern(rows);

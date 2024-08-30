@@ -20,5 +20,6 @@ def print_pattern(rows)
     end
   end
   
-  rows = 3
+  puts "Enter the number of rows:"
+  rows = gets.to_i
   print_pattern(rows)
