@@ -1,6 +1,4 @@
-Here's the documentation for the YOLOv8 repository from [ultralytics/ultralytics](https://github.com/ultralytics/ultralytics) using the format similar to the Django Todo List example:
 
----
 
 # Documentation for YOLOv8 (Ultralytics)
 
